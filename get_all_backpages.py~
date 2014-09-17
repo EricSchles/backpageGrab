@@ -1,0 +1,12 @@
+import requests
+import lxml.html
+
+r = requests.get("http://www.backpage.com/")
+html = lxml.html.fromstring(r.text)
+backpages = html.xpath("//a/@href")
+links = []
+for i in backpages:
+    if "backpage" in i:
+        links.append(i)
+
+print i

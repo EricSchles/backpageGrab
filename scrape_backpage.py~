@@ -1,0 +1,55 @@
+import requests
+import lxml.html
+import pickle
+
+def get_all_backpages():
+    r = requests.get("http://www.backpage.com/")
+    html = lxml.html.fromstring(r.text)
+    backpages = html.xpath("//a/@href")
+    links = []
+    for i in backpages:
+        if "backpage" in i:
+            if not "www" in i: 
+                i = str(i)
+                links.append(i)
+
+    with open("backpages","w") as f:
+        pickle.dump(links,f)
+    
+def setup_all():
+    backpages = pickle.load(open("backpages","rb"))
+    female_escorts = []
+    body_rubs = []
+    strippers = []
+    dominatrixes = []
+    transsexual_escorts = []
+    male_escorts = []
+    websites = []
+    adult_jobs = []
+    for i in backpages:
+        female = i + "FemaleEscorts/"
+        female_escorts.append(female)
+        bodyrub = i + "BodyRubs/"
+        body_rubs.append(bodyrub)
+        stripper = i + "Strippers/"
+        strippers.append(stripper)
+        dominatrix = i + "Domination/"
+        transsexual = i + "TranssexualEscorts/"
+        male = i + "MaleEscorts/"
+        male_escorts.append(male)
+        website = i + "Datelines/"
+        websites.append(website)
+        adult = i + "AdultJobs/"
+        adult_jobs.append(adult)
+    all_pages = female_escorts + body_rubs + strippers + dominatrixes + transsexual_escorts + male_escorts + websites + adult_jobs
+    return all_pages
+
+#gets all the ads on a given backpage, page
+def grab_ads(page):
+    r = requests.get(page)
+    html = lxml.html.fromstring(r.text)
+    ads = html.xpath('//div[@class="cat"]/a/@href')
+    return ads
+
+
+
