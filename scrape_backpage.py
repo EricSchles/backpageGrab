@@ -78,9 +78,9 @@ def grab_ads(page):
         final.append(ad)
     return final
 
-def get_information_from_page(url_list,synchronous=False):
+def get_information_from_page(url_list,asynchronous=False):
     
-    if synchronous:
+    if asynchronous:
         for urls in url_list:
             rs = (grequests.get(u,stream=False) for u in urls)
             responses = grequests.map(rs)
@@ -126,7 +126,7 @@ url_list = []
 for i in xrange(0,len(links),10):
     url_list.append(links[i-10:i])
 
-data = get_information_from_page(url_list,synchronous=True)
+data = get_information_from_page(url_list,asynchronous=True)
 print data
 # data = []
 # for link in links:
